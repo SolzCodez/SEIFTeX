@@ -3,4 +3,4 @@ Lightweight LaTeX snippets and visualisation for VS Code
 
 > **Status:** Planning / pre-MVP.
 
-See `src/Eisenhower Matrix.pdf` for current scope.
+See `CS193/Eisenhower Matrix.pdf` for current scope.
