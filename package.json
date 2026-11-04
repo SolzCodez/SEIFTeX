@@ -9,8 +9,15 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:latex"
+  ],
   "main": "./out/extension.js",
+  "extensionDependencies": [
+    "draivin.hsnips",
+    "HemantBanke.tex-side-preview"
+  ],
+  
   "contributes": {
     "commands": [
       {

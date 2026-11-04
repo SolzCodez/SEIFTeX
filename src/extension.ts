@@ -4,11 +4,7 @@ import * as vscode from 'vscode';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "seiftex" is now active!');
+export async function activate(context: vscode.ExtensionContext) {
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -20,6 +16,78 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+	try {
+		// Attempt to activate the HyperSnips extension and set up the snippets
+    await setupSnippets(context);
+
+    // Reload the HyperSnips created by the function upon extension start
+    await vscode.commands.executeCommand(
+      'hsnips.reloadSnippets'
+    );
+	
+	// Catch and error
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : String(error);
+
+    vscode.window.showErrorMessage(
+      `SEIFTeX could not set up snippets: ${message}`
+    );
+  }
+}
+
+// Setup HyperSnips for the extension
+async function setupSnippets(context: vscode.ExtensionContext): Promise<void> {
+  const source = vscode.Uri.joinPath(
+    context.extensionUri,
+    'snippets',
+    'latex.hsnips'
+  );
+
+  const directory = vscode.Uri.joinPath(
+    context.globalStorageUri,
+    'hsnips'
+  );
+
+  const destination = vscode.Uri.joinPath(
+    directory,
+    'latex.hsnips'
+  );
+
+  const contents = await vscode.workspace.fs.readFile(source);
+
+  await vscode.workspace.fs.createDirectory(directory);
+
+  await vscode.workspace.fs.writeFile(destination, contents);
+
+  const configuration = vscode.workspace.getConfiguration('hsnips');
+
+  const currentPath = configuration.get<string>('hsnipsPath');
+
+  if (currentPath === directory.fsPath) {
+    return;
+  }
+
+  if (currentPath) {
+    const choice = await vscode.window.showWarningMessage(
+      'SEIFTeX needs to change the HyperSnips directory. ' +
+        'Snippets in your previous directory will no longer be loaded ' +
+        'through this setting.',
+      { modal: true },
+      'Use SEIFTeX Snippets'
+    );
+
+    if (choice !== 'Use SEIFTeX Snippets') {
+      return;
+    }
+  }
+
+  await configuration.update(
+    'hsnipsPath',
+    directory.fsPath,
+    vscode.ConfigurationTarget.Global
+  );
 }
 
 // This method is called when your extension is deactivated

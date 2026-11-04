@@ -1,0 +1,272 @@
+global
+function math(context) {
+    return context.scopes.some(scope => scope.startsWith("meta.math"));
+}
+endglobal
+
+# Functions
+
+context math(context)
+snippet ff "Fraction" Ai
+\frac{$1}{$2}$0
+endsnippet
+
+context math(context)
+snippet abs "Absolute value" Ai
+\left\lvert $1 \right\rvert$0
+endsnippet
+
+context math(context)
+snippet ^ "Superscript" Ai
+^{$1}$0
+endsnippet
+
+context math(context)
+snippet _ "Subscript" Ai
+_{$1}$0
+endsnippet
+
+# Lowercase Greek letters
+
+context math(context)
+snippet ;a "alpha" Ai
+\alpha $0
+endsnippet
+
+context math(context)
+snippet ;b "beta" Ai
+\beta $0
+endsnippet
+
+context math(context)
+snippet ;g "gamma" Ai
+\gamma $0
+endsnippet
+
+context math(context)
+snippet ;d "delta" Ai
+\delta $0
+endsnippet
+
+context math(context)
+snippet ;e "epsilon" Ai
+\epsilon $0
+endsnippet
+
+context math(context)
+snippet ;z "zeta" Ai
+\zeta $0
+endsnippet
+
+context math(context)
+snippet ;h "eta" Ai
+\eta $0
+endsnippet
+
+context math(context)
+snippet ;q "theta" Ai
+\theta $0
+endsnippet
+
+context math(context)
+snippet ;i "iota" Ai
+\iota $0
+endsnippet
+
+context math(context)
+snippet ;k "kappa" Ai
+\kappa $0
+endsnippet
+
+context math(context)
+snippet ;l "lambda" Ai
+\lambda $0
+endsnippet
+
+context math(context)
+snippet ;m "mu" Ai
+\mu $0
+endsnippet
+
+context math(context)
+snippet ;n "nu" Ai
+\nu $0
+endsnippet
+
+context math(context)
+snippet ;x "xi" Ai
+\xi $0
+endsnippet
+
+context math(context)
+snippet ;o "omicron" Ai
+o$0
+endsnippet
+
+context math(context)
+snippet ;p "pi" Ai
+\pi $0
+endsnippet
+
+context math(context)
+snippet ;r "rho" Ai
+\rho $0
+endsnippet
+
+context math(context)
+snippet ;s "sigma" Ai
+\sigma $0
+endsnippet
+
+context math(context)
+snippet ;t "tau" Ai
+\tau $0
+endsnippet
+
+context math(context)
+snippet ;u "upsilon" Ai
+\upsilon $0
+endsnippet
+
+context math(context)
+snippet ;f "phi" Ai
+\phi $0
+endsnippet
+
+context math(context)
+snippet ;c "chi" Ai
+\chi $0
+endsnippet
+
+context math(context)
+snippet ;y "psi" Ai
+\psi $0
+endsnippet
+
+context math(context)
+snippet ;w "omega" Ai
+\omega $0
+endsnippet
+
+
+# Uppercase Greek letters
+
+context math(context)
+snippet ;A "Alpha" Ai
+A $0
+endsnippet
+
+context math(context)
+snippet ;B "Beta" Ai
+B $0
+endsnippet
+
+context math(context)
+snippet ;G "Gamma" Ai
+\Gamma $0
+endsnippet
+
+context math(context)
+snippet ;D "Delta" Ai
+\Delta $0
+endsnippet
+
+context math(context)
+snippet ;E "Epsilon" Ai
+E $0
+endsnippet
+
+context math(context)
+snippet ;Z "Zeta" Ai
+Z $0
+endsnippet
+
+context math(context)
+snippet ;H "Eta" Ai
+H $0
+endsnippet
+
+context math(context)
+snippet ;Q "Theta" Ai
+\Theta $0
+endsnippet
+
+context math(context)
+snippet ;I "Iota" Ai
+I $0
+endsnippet
+
+context math(context)
+snippet ;K "Kappa" Ai
+K $0
+endsnippet
+
+context math(context)
+snippet ;L "Lambda" Ai
+\Lambda $0
+endsnippet
+
+context math(context)
+snippet ;M "Mu" Ai
+M $0
+endsnippet
+
+context math(context)
+snippet ;N "Nu" Ai
+N $0
+endsnippet
+
+context math(context)
+snippet ;X "Xi" Ai
+\Xi $0
+endsnippet
+
+context math(context)
+snippet ;O "Omicron" Ai
+O $0
+endsnippet
+
+context math(context)
+snippet ;P "Pi" Ai
+\Pi $0
+endsnippet
+
+context math(context)
+snippet ;R "Rho" Ai
+P $0
+endsnippet
+
+context math(context)
+snippet ;S "Sigma" Ai
+\Sigma $0
+endsnippet
+
+context math(context)
+snippet ;T "Tau" Ai
+T $0
+endsnippet
+
+context math(context)
+snippet ;U "Upsilon" Ai
+\Upsilon $0
+endsnippet
+
+context math(context)
+snippet ;F "Phi" Ai
+\Phi $0
+endsnippet
+
+context math(context)
+snippet ;C "Chi" Ai
+X $0
+endsnippet
+
+context math(context)
+snippet ;Y "Psi" Ai
+\Psi $0
+endsnippet
+
+context math(context)
+snippet ;W "Omega" Ai
+\Omega $0
+endsnippet
