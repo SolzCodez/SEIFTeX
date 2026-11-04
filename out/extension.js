@@ -55,7 +55,7 @@ async function activate(context) {
         await setupSnippets(context);
         // Reload the HyperSnips created by the function upon extension start
         await vscode.commands.executeCommand('hsnips.reloadSnippets');
-        // Catch and error
+        // If there is an error, simply break and return that snippets could not be activated
     }
     catch (error) {
         const message = error instanceof Error ? error.message : String(error);
@@ -75,6 +75,7 @@ async function setupSnippets(context) {
     if (currentPath === directory.fsPath) {
         return;
     }
+    // Ask to override HyperSnips latex.hsnips utilising the SEIFTeX snippets directory
     if (currentPath) {
         const choice = await vscode.window.showWarningMessage('SEIFTeX needs to change the HyperSnips directory. ' +
             'Snippets in your previous directory will no longer be loaded ' +
