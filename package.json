@@ -10,7 +10,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:latex"
+    "onLanguage:latex",
+    "onCommand:seiftex.compile"
   ],
   "main": "./out/extension.js",
   "extensionDependencies": [
@@ -21,8 +22,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "seiftex.helloWorld",
-        "title": "Hello World"
+        "command": "seiftex.compile",
+        "title": "SEIFTeX: Compile LaTeX"
       }
     ]
   },
