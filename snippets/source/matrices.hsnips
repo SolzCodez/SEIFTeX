@@ -1,0 +1,52 @@
+# ============================================================
+# Editable matrices
+# ============================================================
+
+# Press Tab to expand; each cell is an editable placeholder.
+context math(context)
+snippet mat2 "2 by 2 matrix" w
+\begin{pmatrix}
+    ${1:a} & ${2:b} \\\\
+    ${3:c} & ${4:d}
+\end{pmatrix}$0
+endsnippet
+
+context math(context)
+snippet mat3 "3 by 3 matrix" w
+\begin{pmatrix}
+    ${1:a} & ${2:b} & ${3:c} \\\\
+    ${4:d} & ${5:e} & ${6:f} \\\\
+    ${7:g} & ${8:h} & ${9:i}
+\end{pmatrix}$0
+endsnippet
+
+
+# ============================================================
+# Generated matrices
+# ============================================================
+
+# Examples: 2x3mat, 2x3bmat
+# Replace the square placeholders manually.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])([1-6])x([1-6])(b?)mat` "Matrix from dimensions" A
+``
+rv = m[1] + matrix(
+    Number(m[2]),
+    Number(m[3]),
+    () => "\\square",
+    m[4] ? "bmatrix" : "pmatrix"
+);
+``$0
+endsnippet
+
+# Example: 3imat
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])([1-6])imat` "Identity matrix" A
+``
+rv = m[1] + matrix(
+    Number(m[2]),
+    Number(m[2]),
+    (row, col) => row === col ? "1" : "0"
+);
+``$0
+endsnippet

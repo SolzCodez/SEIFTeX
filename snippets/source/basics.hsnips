@@ -1,0 +1,33 @@
+# ============================================================
+# Basic math
+# ============================================================
+
+context math(context)
+snippet sr "Square root" Ai
+\sqrt{$1}$0
+endsnippet
+
+context math(context)
+snippet nr "Nth root" Ai
+\sqrt[${1:n}]{$2}$0
+endsnippet
+
+context math(context)
+snippet abs "Absolute value" Aw
+\left\lvert $1 \right\rvert$0
+endsnippet
+
+context math(context)
+snippet nn "Norm" Ai
+\left\lVert $1 \right\rVert$0
+endsnippet
+
+context math(context)
+snippet ^ "Superscript" Ai
+^{$1}$0
+endsnippet
+
+context math(context)
+snippet _ "Subscript" Ai
+_{$1}$0
+endsnippet

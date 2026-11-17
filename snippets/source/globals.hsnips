@@ -1,0 +1,50 @@
+# ============================================================
+# Shared helpers
+# ============================================================
+
+global
+// Check the current syntax scopes.
+function hasScope(context, prefix) {
+    return context.scopes.some(
+        scope => scope === prefix || scope.startsWith(prefix + ".")
+    );
+}
+
+function comment(context) {
+    return hasScope(context, "comment");
+}
+
+function inMath(context) {
+    return hasScope(context, "meta.math");
+}
+
+function math(context) {
+    return inMath(context)
+        && !comment(context)
+        && !hasScope(context, "meta.text.normal");
+}
+
+function prose(context) {
+    return !inMath(context) && !comment(context);
+}
+
+// Prevent subsequent letters from joining a LaTeX command.
+function terminateCommand(value) {
+    return value.startsWith("\\") ? value + "{}" : value;
+}
+
+function removeEmptyTerminator(value) {
+    return value.replace(/\{\}$/, "");
+}
+
+// Format derivative denominators without unnecessary first powers.
+function power(order) {
+    return Number(order) === 1 ? "" : "^{" + order + "}";
+}
+
+function partialFactor(variable, order) {
+    return "\\partial " + variable + power(order);
+}
+
+function mixedDenominator(variable1, order1, variable2, order2) {
+    if (variable1 === vari

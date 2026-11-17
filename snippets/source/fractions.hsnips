@@ -1,0 +1,21 @@
+# ============================================================
+# Fractions
+# ============================================================
+
+context math(context)
+snippet ff "Fraction" Ai
+\frac{$1}{$2}$0
+endsnippet
+
+# Examples: x//, 12//, \alpha{}//, x_{i}^{2}//
+# Handles simple atoms and scripts, not nested groups.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}])((?:\\[A-Za-z]+(?:\{\})?|[A-Za-z]|[0-9]+)(?:[_^](?:\{[^{}\n]+\}|[A-Za-z0-9]))*)//` "Atom to fraction" A
+``rv = m[1]``\frac{``rv = m[2]``}{$1}$0
+endsnippet
+
+# Example: (x+y)//; removes the outer parentheses.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])\(([^()\n]+)\)//` "Grouped expression to fraction" A
+``rv = m[1]``\frac{``rv = m[2]``}{$1}$0
+endsnippet

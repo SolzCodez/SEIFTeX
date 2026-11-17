@@ -1,0 +1,23 @@
+# ============================================================
+# Math modes and environments
+# ============================================================
+
+context prose(context)
+snippet m$ "Display math" Ai
+\[
+    $1$0
+\]
+endsnippet
+
+context prose(context)
+snippet $$ "Inline math" Ai
+$ $1$0 $
+endsnippet
+
+# Press Tab to expand; available outside comments.
+context !comment(context)
+snippet begin "Environment" w
+\begin{${1:aligned}}
+    $0
+\end{$1}
+endsnippet

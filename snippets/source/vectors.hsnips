@@ -1,0 +1,59 @@
+# ============================================================
+# Vectors
+# ============================================================
+
+context math(context)
+snippet vv "Vector" Ai
+\vec{$1}$0
+endsnippet
+
+context math(context)
+snippet VV "Unit vector" Ai
+\hat{$1}$0
+endsnippet
+
+# Examples: xvec, \alphavec, \alpha{}vec
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}])(\\[A-Za-z]+(?:\{\})?|[A-Za-z])vec` "Atom to vector" A
+``rv = m[1]``\vec{``rv = removeEmptyTerminator(m[2])``}$0
+endsnippet
+
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}])(\\[A-Za-z]+(?:\{\})?|[A-Za-z])VEC` "Atom to unit vector" A
+``rv = m[1]``\hat{``rv = removeEmptyTerminator(m[2])``}$0
+endsnippet
+
+
+# ============================================================
+# Vector calculus
+# ============================================================
+
+context math(context)
+snippet grad "Gradient" Aw
+\nabla ${1:f}$0
+endsnippet
+
+context math(context)
+snippet divg "Divergence" Aw
+\nabla \cdot ${1:\vec{F}}$0
+endsnippet
+
+context math(context)
+snippet curl "Curl" Aw
+\nabla \times ${1:\vec{F}}$0
+endsnippet
+
+context math(context)
+snippet lapl "Laplacian" Aw
+\nabla^{2} ${1:f}$0
+endsnippet
+
+context math(context)
+snippet dotp "Dot product" Aw
+${1:\vec{u}} \cdot ${2:\vec{v}}$0
+endsnippet
+
+context math(context)
+snippet crossp "Cross product" Aw
+${1:\vec{u}} \times ${2:\vec{v}}$0
+endsnippet
