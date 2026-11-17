@@ -14,8 +14,7 @@ If a user does not have a LaTeX compiler downloaded on their machine, `Tectonic.
 There is minimal setup required for this extension, aside from understanding its custom snippets and usage.
 That said, a baseline understanding of how LaTeX works is recommended.
 
-## Additional setup:
-# Setting placeholder navigation precedence over autocomplete.
+## Additional setup: Setting placeholder navigation precedence over autocomplete.
 There is a common grievance regarding tabbing through placeholders and accidentally autocompleting a separate function through Visual Studio Code.
 If you want to fix this, set the precedence to placeholder navigation within a LaTeX file:
 Open the command palette (`ctrl+shift+p`), and navigate to `Preferences: Open Keyboard Shortcuts (JSON)`
