@@ -1,0 +1,382 @@
+# Generated file. Do not edit directly.
+# Edit snippets/source/ and run npm run build:snippets.
+
+# ============================================================
+# Shared helpers
+# ============================================================
+
+global
+// Match a scope or one of its children.
+function hasScope(context, prefix) {
+    return context.scopes.some(
+        scope => scope === prefix || scope.startsWith(prefix + ".")
+    );
+}
+
+function comment(context) {
+    return hasScope(context, "comment");
+}
+
+function inMath(context) {
+    return hasScope(context, "meta.math");
+}
+
+function math(context) {
+    return inMath(context)
+        && !comment(context)
+        && !hasScope(context, "meta.text.normal");
+}
+
+function prose(context) {
+    return !inMath(context) && !comment(context);
+}
+
+// Separate command names from letters typed after them.
+function terminateCommand(value) {
+    return value.startsWith("\\") ? value + "{}" : value;
+}
+
+function removeEmptyTerminator(value) {
+    return value.replace(/\{\}$/, "");
+}
+
+function partialFactor(variable, order) {
+    return "\\partial " + variable
+        + (Number(order) === 1 ? "" : "^{" + order + "}");
+}
+
+function mixedDenominator(variable1, order1, variable2, order2) {
+    if (variable1 === variable2) {
+        return partialFactor(variable1, Number(order1) + Number(order2));
+    }
+
+    return partialFactor(variable1, order1)
+        + " " + partialFactor(variable2, order2);
+}
+
+// Preserve the row-separator escaping reported working in this setup.
+// Generated cells are plain LaTeX, not editable snippet placeholders.
+function matrix(rows, cols, cell, environment = "pmatrix") {
+    const lines = [];
+
+    for (let row = 0; row < rows; row++) {
+        const cells = [];
+
+        for (let col = 0; col < cols; col++) {
+            cells.push(cell(row, col));
+        }
+
+        lines.push("    " + cells.join(" & "));
+    }
+
+    return "\\begin{" + environment + "}\n"
+        + lines.join(" " + "\\".repeat(4) + "\n")
+        + "\n\\end{" + environment + "}";
+}
+
+// Full output values; Latin look-alikes remain literal characters.
+const greekLower = {
+    a: "\\alpha", b: "\\beta", g: "\\gamma", d: "\\delta",
+    e: "\\epsilon", z: "\\zeta", h: "\\eta", q: "\\theta",
+    i: "\\iota", k: "\\kappa", l: "\\lambda", m: "\\mu",
+    n: "\\nu", x: "\\xi", o: "o", p: "\\pi",
+    r: "\\rho", s: "\\sigma", t: "\\tau", u: "\\upsilon",
+    f: "\\phi", c: "\\chi", y: "\\psi", w: "\\omega"
+};
+
+const greekUpper = {
+    A: "A", B: "B", G: "\\Gamma", D: "\\Delta",
+    E: "E", Z: "Z", H: "H", Q: "\\Theta",
+    I: "I", K: "K", L: "\\Lambda", M: "M",
+    N: "N", X: "\\Xi", O: "O", P: "\\Pi",
+    R: "P", S: "\\Sigma", T: "T", U: "\\Upsilon",
+    F: "\\Phi", C: "X", Y: "\\Psi", W: "\\Omega"
+};
+endglobal
+
+
+# ============================================================
+# Math modes and environments
+# ============================================================
+
+context prose(context)
+snippet m$ "Display math" Ai
+\[
+    $1$0
+\]
+endsnippet
+
+context prose(context)
+snippet $$ "Inline math" Ai
+$ $1$0 $
+endsnippet
+
+# Press Tab to expand.
+context !comment(context)
+snippet begin "Environment" w
+\begin{${1:aligned}}
+    $0
+\end{$1}
+endsnippet
+
+
+# ============================================================
+# Basic math
+# ============================================================
+
+# Short word triggers require a boundary; existing command names are protected.
+
+context math(context)
+snippet `(^|[^\\A-Za-z])sr` "Square root" A
+``rv = m[1]``\sqrt{$1}$0
+endsnippet
+
+context math(context)
+snippet `(^|[^\\A-Za-z])nr` "Nth root" A
+``rv = m[1]``\sqrt[${1:n}]{$2}$0
+endsnippet
+
+context math(context)
+snippet `(^|[^\\A-Za-z])abs` "Absolute value" A
+``rv = m[1]``\left\lvert $1 \right\rvert$0
+endsnippet
+
+context math(context)
+snippet `(^|[^\\A-Za-z])nn` "Norm" A
+``rv = m[1]``\left\lVert $1 \right\rVert$0
+endsnippet
+
+context math(context)
+snippet ^ "Superscript" Ai
+^{$1}$0
+endsnippet
+
+context math(context)
+snippet _ "Subscript" Ai
+_{$1}$0
+endsnippet
+
+
+# ============================================================
+# Fractions
+# ============================================================
+
+context math(context)
+snippet `(^|[^\\A-Za-z])ff` "Fraction" A
+``rv = m[1]``\frac{$1}{$2}$0
+endsnippet
+
+# Simple atoms only: x//, 12//, \alpha{}//, x_{i}^{2}//.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}])((?:\\[A-Za-z]+(?:\{\})?|[A-Za-z]|[0-9]+)(?:[_^](?:\{[^{}\n]+\}|[A-Za-z0-9]))*)//` "Atom to fraction" A
+``rv = m[1]``\frac{``rv = m[2]``}{$1}$0
+endsnippet
+
+# Simple standalone groups only: (x+y)//. Nested groups are excluded.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}()])\(([^()\n]+)\)//` "Grouped expression to fraction" A
+``rv = m[1]``\frac{``rv = m[2]``}{$1}$0
+endsnippet
+
+
+# ============================================================
+# Derivatives
+# ============================================================
+
+# General templates use Tab; expressions are empty and variables default to x.
+
+context math(context)
+snippet pd "Partial derivative" w
+\frac{\partial $1}{\partial ${2:x}}$0
+endsnippet
+
+context math(context)
+snippet dv "Ordinary derivative" w
+\frac{\mathrm{d} $1}{\mathrm{d} ${2:x}}$0
+endsnippet
+
+# Examples: 2pd, 3dv. The denominator expects one variable.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])([2-9])(pd|dv)` "Higher-order derivative" A
+``rv = m[1]``\frac{``rv = (m[3] === "pd" ? "\\partial" : "\\mathrm{d}") + "^{" + m[2] + "}"`` $1}{``rv = m[3] === "pd" ? "\\partial" : "\\mathrm{d}"`` ${2:x}^{``rv = m[2]``}}$0
+endsnippet
+
+# Examples: pdxy, pd2x3y. Repeated variables combine: pdxx.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])pd([1-9]?)([xyz])([1-9]?)([xyz])` "Mixed partial derivative" A
+``rv = m[1]``\frac{\partial^{``rv = Number(m[2] || 1) + Number(m[4] || 1)``} $1}{``rv = mixedDenominator(m[3], m[2] || 1, m[5], m[4] || 1)``}$0
+endsnippet
+
+
+# ============================================================
+# Vector notation
+# ============================================================
+
+context math(context)
+snippet `(^|[^\\A-Za-z])vv` "Vector" A
+``rv = m[1]``\vec{$1}$0
+endsnippet
+
+context math(context)
+snippet `(^|[^\\A-Za-z])VV` "Unit vector" A
+``rv = m[1]``\hat{$1}$0
+endsnippet
+
+# Examples: xvec, xVEC, \alpha{}vec. One rule handles both wrappers.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9_{}])(\\[A-Za-z]+(?:\{\})?|[A-Za-z])(vec|VEC)` "Decorate preceding atom" A
+``rv = m[1]````rv = m[3] === "vec" ? "\\vec" : "\\hat"``{``rv = removeEmptyTerminator(m[2])``}$0
+endsnippet
+
+
+# ============================================================
+# Vector products
+# ============================================================
+
+context math(context)
+snippet dotp "Dot product" w
+$1 \cdot $2$0
+endsnippet
+
+context math(context)
+snippet crossp "Cross product" w
+$1 \times $2$0
+endsnippet
+
+
+# ============================================================
+# Vector calculus
+# ============================================================
+
+context math(context)
+snippet grad "Gradient" w
+\nabla $1$0
+endsnippet
+
+context math(context)
+snippet divg "Divergence" w
+\nabla \cdot $1$0
+endsnippet
+
+context math(context)
+snippet curl "Curl" w
+\nabla \times $1$0
+endsnippet
+
+context math(context)
+snippet lapl "Laplacian" w
+\nabla^{2} $1$0
+endsnippet
+
+
+# ============================================================
+# Editable matrices
+# ============================================================
+
+# Press Tab to expand; cell contents start empty.
+
+context math(context)
+snippet mat2 "2 by 2 matrix" w
+\begin{pmatrix}
+    $1 & $2 \\\\
+    $3 & $4
+\end{pmatrix}$0
+endsnippet
+
+context math(context)
+snippet mat3 "3 by 3 matrix" w
+\begin{pmatrix}
+    $1 & $2 & $3 \\\\
+    $4 & $5 & $6 \\\\
+    $7 & $8 & $9
+\end{pmatrix}$0
+endsnippet
+
+
+# ============================================================
+# Generated matrices
+# ============================================================
+
+# Examples: 2x3mat, 2x3bmat. Replace squares manually.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])([1-6])x([1-6])(b?)mat` "Matrix from dimensions" A
+``
+rv = m[1] + matrix(
+    Number(m[2]),
+    Number(m[3]),
+    () => "\\square",
+    m[4] ? "bmatrix" : "pmatrix"
+);
+``$0
+endsnippet
+
+# Example: 3imat.
+context math(context)
+snippet `(^|[^\\A-Za-z0-9])([1-6])imat` "Identity matrix" A
+``
+rv = m[1] + matrix(
+    Number(m[2]),
+    Number(m[2]),
+    (row, col) => row === col ? "1" : "0"
+);
+``$0
+endsnippet
+
+
+# ============================================================
+# Greek letters
+# ============================================================
+
+# Examples: ;a -> \alpha{}, ;q -> \theta{}.
+context math(context)
+snippet `;([abgdezhqiklmnxoprstufcyw])` "Lowercase Greek" A
+``rv = terminateCommand(greekLower[m[1]])``$0
+endsnippet
+
+# Examples: :G -> \Gamma{}, :A -> A.
+context math(context)
+snippet `:([ABGDEZHQIKLMNXOPRSTUFCYW])` "Uppercase Greek" A
+``rv = terminateCommand(greekUpper[m[1]])``$0
+endsnippet
+
+
+# ============================================================
+# Logic
+# ============================================================
+
+# All logic templates use Tab. Operand placeholders start empty.
+
+context math(context)
+snippet implies "Implication" w
+\implies{}$0
+endsnippet
+
+context math(context)
+snippet iff "Equivalence" w
+\iff{}$0
+endsnippet
+
+context math(context)
+snippet forall "Universal quantifier" w
+\forall $1$0
+endsnippet
+
+context math(context)
+snippet exists "Existential quantifier" w
+\exists $1$0
+endsnippet
+
+context math(context)
+snippet land "Logical conjunction" w
+\land{}$0
+endsnippet
+
+context math(context)
+snippet lor "Logical disjunction" w
+\lor{}$0
+endsnippet
+
+context math(context)
+snippet neg "Logical negation" w
+\neg $1$0
+endsnippet

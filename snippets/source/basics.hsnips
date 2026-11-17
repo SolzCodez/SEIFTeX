@@ -2,24 +2,26 @@
 # Basic math
 # ============================================================
 
+# Short word triggers require a boundary; existing command names are protected.
+
 context math(context)
-snippet sr "Square root" Ai
-\sqrt{$1}$0
+snippet `(^|[^\\A-Za-z])sr` "Square root" A
+``rv = m[1]``\sqrt{$1}$0
 endsnippet
 
 context math(context)
-snippet nr "Nth root" Ai
-\sqrt[${1:n}]{$2}$0
+snippet `(^|[^\\A-Za-z])nr` "Nth root" A
+``rv = m[1]``\sqrt[${1:n}]{$2}$0
 endsnippet
 
 context math(context)
-snippet abs "Absolute value" Aw
-\left\lvert $1 \right\rvert$0
+snippet `(^|[^\\A-Za-z])abs` "Absolute value" A
+``rv = m[1]``\left\lvert $1 \right\rvert$0
 endsnippet
 
 context math(context)
-snippet nn "Norm" Ai
-\left\lVert $1 \right\rVert$0
+snippet `(^|[^\\A-Za-z])nn` "Norm" A
+``rv = m[1]``\left\lVert $1 \right\rVert$0
 endsnippet
 
 context math(context)

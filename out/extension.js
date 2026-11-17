@@ -62,6 +62,7 @@ async function activate(context) {
         // If there is an error, simply break and return that snippets could not be activated
     }
     catch (error) {
+        console.error("SEIFTeX snippet setup/reload failed:", error);
         const message = error instanceof Error ? error.message : String(error);
         vscode.window.showErrorMessage(`SEIFTeX could not set up snippets: ${message}`);
     }

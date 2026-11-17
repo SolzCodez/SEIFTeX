@@ -2,13 +2,13 @@
 # Greek letters
 # ============================================================
 
-# Examples: ;a -> \alpha{}, ;q -> \theta{}
+# Examples: ;a -> \alpha{}, ;q -> \theta{}.
 context math(context)
 snippet `;([abgdezhqiklmnxoprstufcyw])` "Lowercase Greek" A
 ``rv = terminateCommand(greekLower[m[1]])``$0
 endsnippet
 
-# Examples: :G -> \Gamma{}, :A -> A
+# Examples: :G -> \Gamma{}, :A -> A.
 context math(context)
 snippet `:([ABGDEZHQIKLMNXOPRSTUFCYW])` "Uppercase Greek" A
 ``rv = terminateCommand(greekUpper[m[1]])``$0

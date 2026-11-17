@@ -2,7 +2,8 @@
 # Logic
 # ============================================================
 
-# Press Tab to expand.
+# Press Tab to expand; operand placeholders start empty.
+
 context math(context)
 snippet implies "Implication" w
 \implies{}$0
@@ -15,12 +16,12 @@ endsnippet
 
 context math(context)
 snippet forall "Universal quantifier" w
-\forall ${1:x}$0
+\forall $1$0
 endsnippet
 
 context math(context)
 snippet exists "Existential quantifier" w
-\exists ${1:x}$0
+\exists $1$0
 endsnippet
 
 context math(context)
@@ -35,5 +36,5 @@ endsnippet
 
 context math(context)
 snippet neg "Logical negation" w
-\neg ${1:P}$0
+\neg $1$0
 endsnippet

@@ -3,7 +3,7 @@
 # ============================================================
 
 global
-// Check the current syntax scopes.
+// Match a scope or one of its children.
 function hasScope(context, prefix) {
     return context.scopes.some(
         scope => scope === prefix || scope.startsWith(prefix + ".")
@@ -28,7 +28,7 @@ function prose(context) {
     return !inMath(context) && !comment(context);
 }
 
-// Prevent subsequent letters from joining a LaTeX command.
+// Separate command names from letters typed after them.
 function terminateCommand(value) {
     return value.startsWith("\\") ? value + "{}" : value;
 }
@@ -37,14 +37,56 @@ function removeEmptyTerminator(value) {
     return value.replace(/\{\}$/, "");
 }
 
-// Format derivative denominators without unnecessary first powers.
-function power(order) {
-    return Number(order) === 1 ? "" : "^{" + order + "}";
-}
-
 function partialFactor(variable, order) {
-    return "\\partial " + variable + power(order);
+    return "\\partial " + variable
+        + (Number(order) === 1 ? "" : "^{" + order + "}");
 }
 
 function mixedDenominator(variable1, order1, variable2, order2) {
-    if (variable1 === vari
+    if (variable1 === variable2) {
+        return partialFactor(variable1, Number(order1) + Number(order2));
+    }
+
+    return partialFactor(variable1, order1)
+        + " " + partialFactor(variable2, order2);
+}
+
+// Preserve the row-separator escaping reported working in this setup.
+// Generated cells are plain LaTeX, not editable snippet placeholders.
+function matrix(rows, cols, cell, environment = "pmatrix") {
+    const lines = [];
+
+    for (let row = 0; row < rows; row++) {
+        const cells = [];
+
+        for (let col = 0; col < cols; col++) {
+            cells.push(cell(row, col));
+        }
+
+        lines.push("    " + cells.join(" & "));
+    }
+
+    return "\\begin{" + environment + "}\n"
+        + lines.join(" " + "\\".repeat(4) + "\n")
+        + "\n\\end{" + environment + "}";
+}
+
+// Full output values; Latin look-alikes remain literal characters.
+const greekLower = {
+    a: "\\alpha", b: "\\beta", g: "\\gamma", d: "\\delta",
+    e: "\\epsilon", z: "\\zeta", h: "\\eta", q: "\\theta",
+    i: "\\iota", k: "\\kappa", l: "\\lambda", m: "\\mu",
+    n: "\\nu", x: "\\xi", o: "o", p: "\\pi",
+    r: "\\rho", s: "\\sigma", t: "\\tau", u: "\\upsilon",
+    f: "\\phi", c: "\\chi", y: "\\psi", w: "\\omega"
+};
+
+const greekUpper = {
+    A: "A", B: "B", G: "\\Gamma", D: "\\Delta",
+    E: "E", Z: "Z", H: "H", Q: "\\Theta",
+    I: "I", K: "K", L: "\\Lambda", M: "M",
+    N: "N", X: "\\Xi", O: "O", P: "\\Pi",
+    R: "P", S: "\\Sigma", T: "T", U: "\\Upsilon",
+    F: "\\Phi", C: "X", Y: "\\Psi", W: "\\Omega"
+};
+endglobal
