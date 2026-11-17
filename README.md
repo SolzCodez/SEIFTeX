@@ -5,16 +5,16 @@ Lightweight LaTeX snippets and visualisation for VS Code
 
 See `CS193/Eisenhower Matrix.pdf` for current scope.
 
-### Snippets
+## Snippets
 Documentation of the custom snippets within this extension will be updated below.
 
-## Required setup
+### Required setup
 Users are recommended to have downloaded a LaTeX compiler such as `TeX Live`, but this is not required.
 If a user does not have a LaTeX compiler downloaded on their machine, `Tectonic.exe` compiler will be downloaded automatically for the extension
 There is minimal setup required for this extension, aside from understanding its custom snippets and usage.
 That said, a baseline understanding of how LaTeX works is recommended.
 
-## Additional setup: Setting placeholder navigation precedence over autocomplete.
+### Additional setup: Setting placeholder navigation precedence over autocomplete.
 There is a common grievance regarding tabbing through placeholders and accidentally autocompleting a separate function through Visual Studio Code.
 If you want to fix this, set the precedence to placeholder navigation within a LaTeX file:
 Open the command palette (`ctrl+shift+p`), and navigate to `Preferences: Open Keyboard Shortcuts (JSON)`
